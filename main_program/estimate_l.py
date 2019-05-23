@@ -33,7 +33,7 @@ class IlluminationEstimation(object):
         return Zh + meu * (grad_h - Th), Zv + meu * (grad_v - Tv)
 
     def main(self, img):
-        illumination = np.copy(img)
+        init_illumination = cv2.GaussianBlur(img, (5, 5), 2.0)
         Th = np.zeros((self.height, self.width), dtype=np.float32)
         Tv = np.zeros((self.height, self.width), dtype=np.float32)
         Zh = np.zeros((self.height, self.width), dtype=np.float32)
@@ -41,17 +41,10 @@ class IlluminationEstimation(object):
         meu = 1.0
         p = 1.5
         k = 0
-        while (k < 10):
-            illumination = self.get_illumination(img, Th, Tv, Zh, Zv, meu)
-            cv2.imshow("Illumination", illumination.astype(dtype=np.uint8))
-            cv2.waitKey(0)
-            #illumination = np.clip(illumination, 0, 255)
-            #illumination = np.fix(illumination).astype(dtype=np.uint8)
+        while (k < 5):
+            illumination = self.get_illumination(init_illumination, Th, Tv, Zh, Zv, meu)
             grad_h = cv2.Sobel(img/255.0, cv2.CV_64F, 1, 0, ksize=3)
             grad_v = cv2.Sobel(img/255.0, cv2.CV_64F, 0, 1, ksize=3)
-            #cv2.imshow("grad_h", grad_h)
-            #cv2.imshow("grad_v", grad_v)
-            #cv2.waitKey(0)
             Th, Tv = self.get_T(grad_h, grad_v, Zh, Zv, meu)
             Zh, Zv = self.get_Z(grad_h, grad_v, Th, Tv, Zh, Zv, meu)
             meu *= p
@@ -73,9 +66,9 @@ if __name__ == '__main__':
         # HSV変換
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         h, s, v = cv2.split(hsv)
-        illumination = IlluminationEstimation(v.astype(dtype=np.float32), 0.007).main(v.astype(dtype=np.float32))
+        illumination = IlluminationEstimation(v, 0.007).main(v.astype(dtype=np.float32))
         #illumination = illumination * 255.0
         #illumination = np.clip(illumination, 0, 255)
         #illumination = np.fix(illumination).astype(dtype=np.uint8)
-        cv2.imshow("Illumination", illumination.astype(dtype=np.uint8))#.astype(dtype=np.uint8))
+        cv2.imshow("Illumination", illumination.astype(dtype=np.uint8))  # .astype(dtype=np.uint8))
         cv2.waitKey(0)
