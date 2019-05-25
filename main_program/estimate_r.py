@@ -52,8 +52,8 @@ class ReflectanceEstimation(object):
         grad_v = np.copy(self.grad_v)
         # ∇S^を計算
         print(np.max(self.grad_h))
-        grad_h[np.abs(self.grad_h) < self.eps] = 0.0
-        grad_v[np.abs(self.grad_v) < self.eps] = 0.0
+        grad_h[np.abs(grad_h) < self.eps] = 0.0
+        grad_v[np.abs(grad_v) < self.eps] = 0.0
         # Gを計算
         Gh = (1.0 + self.lam * np.exp(-np.abs(grad_h)/self.sigma)) * grad_h
         Gv = (1.0 + self.lam * np.exp(-np.abs(grad_v)/self.sigma)) * grad_v
@@ -61,10 +61,10 @@ class ReflectanceEstimation(object):
 
     def get_reflectance(self, img, Wh, Wv, Gh, Gv):
         phi = self.omega * (self.F_conj_h * np.fft.fft2(Gh) + self.F_conj_v * np.fft.fft2(Gv))
-        up = np.fft.fft2(img / (self.illumination + 0.01))
+        up = np.fft.fft2(img / self.illumination)
 
         tmp = self.beta * (self.F_conj_h * np.fft.fft2(Wh) * self.F_h + self.F_conj_v * np.fft.fft2(Wv) * self.F_v)
-        bottom = 1.0 + tmp + self.F_div
+        bottom = 1.0 + tmp + self.omega * self.F_div
 
         return np.real(np.fft.ifft2(up / bottom))
 

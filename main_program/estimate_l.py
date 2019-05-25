@@ -11,9 +11,9 @@ class IlluminationEstimation(object):
         self.height = img.shape[0]
         self.width = img.shape[1]
 
-        self.kernel = np.array([[-1, 0, 1],
-                                [-2, 0, 2],
-                                [-1, 0, 1]])
+        self.kernel = np.array([[0, 0, 0],
+                                [-1, 0, 1],
+                                [0, 0, 0]])
 
         self.F_conj_h = psf(np.expand_dims(np.array([1, -1]), axis=1), (self.height, self.width)).conjugate()
         self.F_conj_v = psf(np.expand_dims(np.array([1, -1]), axis=1).T, (self.height, self.width)).conjugate()
@@ -33,22 +33,29 @@ class IlluminationEstimation(object):
         return Zh + meu * (grad_h - Th), Zv + meu * (grad_v - Tv)
 
     def main(self, img):
-        init_illumination = cv2.GaussianBlur(img, (5, 5), 2.0)
+        init_illumination = np.copy(img)
         Th = np.zeros((self.height, self.width), dtype=np.float32)
         Tv = np.zeros((self.height, self.width), dtype=np.float32)
         Zh = np.zeros((self.height, self.width), dtype=np.float32)
         Zv = np.zeros((self.height, self.width), dtype=np.float32)
         meu = 1.0
         p = 1.5
-        k = 0
-        while (k < 5):
+        count = 0
+        while(True):
             illumination = self.get_illumination(init_illumination, Th, Tv, Zh, Zv, meu)
-            grad_h = cv2.Sobel(img/255.0, cv2.CV_64F, 1, 0, ksize=3)
-            grad_v = cv2.Sobel(img/255.0, cv2.CV_64F, 0, 1, ksize=3)
+            grad_h = cv2.filter2D(img/255.0, cv2.CV_32F, self.kernel)
+            grad_v = cv2.filter2D(img/255.0, cv2.CV_32F, self.kernel.T)
             Th, Tv = self.get_T(grad_h, grad_v, Zh, Zv, meu)
             Zh, Zv = self.get_Z(grad_h, grad_v, Th, Tv, Zh, Zv, meu)
             meu *= p
-            k += 1
+            if (count != 0):
+                # 収束条件
+                eps_l = np.abs(np.sum(illumination) - np.sum(illumination_prev)) / np.abs(np.sum(illumination_prev))
+                if (eps_l <= 0.0001):
+                    break
+            count += 1
+            print(count)
+            illumination_prev = np.copy(illumination)
         return illumination
 
 def fileRead():
