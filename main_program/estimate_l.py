@@ -12,7 +12,7 @@ class IlluminationEstimation(object):
         self.width = img.shape[1]
 
         self.kernel = np.array([[0, 0, 0],
-                                [-1, 0, 1],
+                                [-1, 1, 0],
                                 [0, 0, 0]])
 
         self.F_conj_h = psf(np.expand_dims(np.array([1, -1]), axis=1), (self.height, self.width)).conjugate()
@@ -43,8 +43,8 @@ class IlluminationEstimation(object):
         count = 0
         while(True):
             illumination = self.get_illumination(init_illumination, Th, Tv, Zh, Zv, meu)
-            grad_h = cv2.filter2D(img/255.0, cv2.CV_32F, self.kernel)
-            grad_v = cv2.filter2D(img/255.0, cv2.CV_32F, self.kernel.T)
+            grad_h = cv2.filter2D(img, cv2.CV_32F, self.kernel)
+            grad_v = cv2.filter2D(img, cv2.CV_32F, self.kernel.T)
             Th, Tv = self.get_T(grad_h, grad_v, Zh, Zv, meu)
             Zh, Zv = self.get_Z(grad_h, grad_v, Th, Tv, Zh, Zv, meu)
             meu *= p
@@ -54,8 +54,11 @@ class IlluminationEstimation(object):
                 if (eps_l <= 0.0001):
                     break
             count += 1
-            print(count)
             illumination_prev = np.copy(illumination)
+        output = illumination * 255.0
+        output = np.clip(output, 0, 255)
+        output = np.fix(output).astype(dtype=np.uint8)
+        cv2.imshow("Illumination", output)
         return illumination
 
 def fileRead():
