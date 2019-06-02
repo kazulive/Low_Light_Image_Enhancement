@@ -5,12 +5,24 @@ import cv2
 import sys
 
 # limeのmain処理
-class IlluminationEnhnacement:
-    def __init__(self, alpha, gamma, scale, eps):
+class IlluminationEstimation:
+    def __init__(self, alpha, norm_p, eta, scale, eps):
         self.alpha = alpha
-        self.gamma = gamma
+        self.norm_p = norm_p
+        self.eta = eta
         self.scale = scale
         self.eps = eps
+
+    def compute_weight_map(self, img):
+        # ∇Iの計算
+        img_h = np.hstack([np.diff(img, axis=1), (img[:, 0]-img[:, -1]).reshape(-1, 1)])
+        img_v = np.vstack([np.diff(img, axis=0), (img[0, :] - img[-1, :]).reshape(1, -1)])
+        # uの計算
+        uh = np.ones(img.shape, dtype=np.float32) * (1. / (self.eta ** (2-self.norm_p)))
+        uv = np.copy(uh)
+        uh[np.abs(img_h) > self.eta] = 1.0 / ((np.abs(img_h[np.abs(img_h) > self.eta]))**(2 - self.norm_p) + 1e-3)
+        uv[np.abs(img_v) > self.eta] = 1.0 / ((np.abs(img_v[np.abs(img_v) > self.eta])) ** (2 - self.norm_p) + 1e-3)
+        return uh, uv
 
     def solve_linear_equation(self, Ih, Wx, Wy):
         """
@@ -20,6 +32,7 @@ class IlluminationEnhnacement:
         """
         H, W = Ih.shape[:2]
         N = H * W
+
 
         # ベクトル化
         Ih_vec = Ih.flatten('C')
@@ -56,17 +69,18 @@ class IlluminationEnhnacement:
         # 線形関数を構成
         m2 = scipy.sparse.linalg.LinearOperator((N, N), m.solve)
         # 前処理付き共役勾配法
-        T, info = scipy.sparse.linalg.bicgstab(a, Ih_vec, tol=1e-3, maxiter=2000, M=m2)
+        illumination, info = scipy.sparse.linalg.bicgstab(a, Ih_vec, tol=1e-4, maxiter=2000, M=m2)
 
         if info != 0:
             print("収束不可能でした")
+        
 
-        T = T.reshape((H, W), order='C')
+        illumination = illumination.reshape((H, W), order='C')
 
-        T = np.clip(T, 0, sys.maxsize)
-        T = T / (np.max(T) + self.eps)
+        illumination = np.clip(illumination, 0, sys.maxsize)
+        illumination = illumination / (np.max(illumination) + self.eps)
 
-        return T
+        return illumination
 
     def get_illumination(self, img):
         # 画像サイズ確保
@@ -78,34 +92,33 @@ class IlluminationEnhnacement:
         down_img = cv2.resize(img, (dW, dH), interpolation=cv2.INTER_AREA)
 
         # 画素値の正規化 [0, 1]
-        down_img = down_img / 255.
+        #down_img = down_img / 255.
 
         # 初期照明画像の生成 I0 <- v_ch
         illumination = np.copy(down_img)
-        print(illumination.shape)
         # ∇Iの計算
-        illumination_h = np.hstack([np.diff(illumination, axis=1), (illumination[:, 0]-illumination[:, -1]).reshape(-1, 1)])
-        illumination_v = np.vstack([np.diff(illumination, axis=0), (illumination[0, :] - illumination[-1, :]).reshape(1, -1)])
+        #illumination_h = np.hstack([np.diff(illumination, axis=1), (illumination[:, 0]-illumination[:, -1]).reshape(-1, 1)])
+        #illumination_v = np.vstack([np.diff(illumination, axis=0), (illumination[0, :] - illumination[-1, :]).reshape(1, -1)])
 
-
-        Wx = 1.0 / (np.abs(illumination_h) + self.eps)
-        Wy = 1.0 / (np.abs(illumination_v) + self.eps)
+        Wx, Wy = self.compute_weight_map(illumination)
+        #Wx = 1.0 / (np.abs(illumination_h) + self.eps)
+        #Wy = 1.0 / (np.abs(illumination_v) + self.eps)
 
         # 照明画像を更新
         estimate_illumination = self.solve_linear_equation(illumination, Wx, Wy)
-        cv2.imshow("Illumination", estimate_illumination)
-        # γ関数
-        estimate_illumination = np.power(estimate_illumination, 1. / self.gamma)
-        estimate_illumination = np.expand_dims(estimate_illumination, axis=2) + self.eps
 
-        cv2.imshow("Estimate_Illumination", estimate_illumination)
-        cv2.waitKey(0)
-
-        return
+        #cv2.imshow("Estimate_Illumination" + str(self.norm_p), estimate_illumination)
+        #cv2.imwrite("./Estimate_Illumination" + str(self.norm_p) + ".bmp", (255.0 * estimate_illumination).astype(dtype=np.uint8))
+        return estimate_illumination
 
 if __name__ == '__main__':
-    img = cv2.imread('./testdata/BMP/10.bmp')
+    img = cv2.imread('./testdata/BMP/6.bmp')
     cv2.imshow("input", img)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
-    output = IlluminationEnhnacement(alpha=0.007, gamma=2.2, scale=1.0, eps=1e-3).get_illumination(v)
+    output = IlluminationEstimation(alpha=0.01, norm_p= 0.1, eta = 1./8., scale=1.0, eps=1e-3).get_illumination(v)
+    output = IlluminationEstimation(alpha=0.01, norm_p=0.4, eta=1. / 8., scale=1.0, eps=1e-3).get_illumination(v)
+    output = IlluminationEstimation(alpha=0.01, norm_p=1.0, eta=1. / 8., scale=1.0, eps=1e-3).get_illumination(v)
+    output = IlluminationEstimation(alpha=0.01, norm_p=2.0, eta=1. / 8., scale=1.0, eps=1e-3).get_illumination(v)
+
+    cv2.waitKey(0)

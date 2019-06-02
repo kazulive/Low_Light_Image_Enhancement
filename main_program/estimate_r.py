@@ -6,7 +6,7 @@ from natsort import natsorted
 # 同パッケージ内のモジュール
 from padding import psf2otf as psf
 from padding import getKernel as gK
-from estimate_l import IlluminationEstimation
+from pcg_estimate_l import IlluminationEstimation
 from clahe import *                 # CLAHE関数
 from shrink import *                # shrinkage関数
 
@@ -23,29 +23,33 @@ class ReflectanceEstimation(object):
                                 [-1, 1, 0],
                                 [0, 0, 0]], np.float32)
 
+        dx = np.array([-1, 1]).reshape([1, -1])
+        dy = dx.T
         # 微分オペレータ、デルタ関数のFFT
-        self.F_h = psf(np.expand_dims(np.array([1, -1]), axis=1), (self.height, self.width))
-        self.F_v = psf(np.expand_dims(np.array([1, -1]), axis=1).T, (self.height, self.width))
-        self.F_conj_h = psf(np.expand_dims(np.array([1, -1]), axis=1), (self.height, self.width)).conjugate()
-        self.F_conj_v = psf(np.expand_dims(np.array([1, -1]), axis=1).T, (self.height, self.width)).conjugate()
-        self.F_div = gK(img)[1]
+        self.F_h = psf(dx, (self.height, self.width))
+        self.F_v = psf(dy, (self.height, self.width))
+        self.F_conj_h = np.conj(self.F_h)
+        self.F_conj_v = np.conj(self.F_v)
+        self.F_div = np.abs(self.F_h) ** 2 + np.abs(self.F_v) ** 2
 
         # Illuminatioを計算
         self.illumination = illumination
 
-        #dst = cv2.normalize(img.astype('float32'), None, 0.0, 255.0, cv2.NORM_MINMAX)
+        dst = img * 255.0
 
         # 入力画像の勾配画像
-        self.grad_h = cv2.filter2D(img, cv2.CV_32F, self.kernel)
-        self.grad_v = cv2.filter2D(img, cv2.CV_32F, self.kernel)
+        self.grad_h = cv2.filter2D(dst, cv2.CV_32F, self.kernel)
+        self.grad_v = cv2.filter2D(dst, cv2.CV_32F, self.kernel.T)
 
     # 重み行列
     def get_weigth_matrix(self):
         # Wを計算
-        Wh = 1.0 / (np.abs(self.grad_h) + 1.0)
-        Wv = 1.0 / (np.abs(self.grad_v) + 1.0)
+        Wh = 1.0 / (np.abs(self.grad_h) + 0.001)
+        Wv = 1.0 / (np.abs(self.grad_v) + 0.001)
         cv2.imshow("WH", Wh)
-
+        cv2.imshow("WH", Wv)
+        #Wh = 1.0
+        #Wv = 1.0
         return Wh, Wv
 
     # 勾配重み行列
@@ -53,21 +57,25 @@ class ReflectanceEstimation(object):
         grad_h = np.copy(self.grad_h)
         grad_v = np.copy(self.grad_v)
         # ∇S^を計算
-        grad_h[np.abs(grad_h) < self.eps/1000] = 0.0
-        grad_v[np.abs(grad_v) < self.eps/1000] = 0.0
+        grad_h[np.abs(grad_h) < self.eps] = 0.0
+        grad_v[np.abs(grad_v) < self.eps] = 0.0
         # Gを計算
         Gh = (1.0 + self.lam * np.exp(-np.abs(grad_h)/self.sigma)) * grad_h
         Gv = (1.0 + self.lam * np.exp(-np.abs(grad_v)/self.sigma)) * grad_v
+        cv2.imshow("Gv", Gh)
         cv2.imshow("Gv", Gv)
         return Gh, Gv
 
     def get_reflectance(self, img, Wh, Wv, Gh, Gv):
-        phi = self.omega * (self.F_conj_h * np.fft.fft2(Gh) + self.F_conj_v * np.fft.fft2(Gv))
-        up = np.fft.fft2(img / np.maximum(self.illumination, 0.1)) + phi
-        tmp = self.beta * (self.F_conj_h * np.fft.fft2(Wh) * self.F_h + self.F_conj_v * np.fft.fft2(Wv) * self.F_v)
-        bottom = 1.0 + tmp + self.omega * self.F_div
+        tmp_h = np.multiply(self.F_conj_h, psf(Gh, (self.height, self.width)))
+        tmp_v = np.multiply(self.F_conj_v, psf(Gv, (self.height, self.width)))
+        phi = self.omega * (tmp_h + tmp_v)
+        up = psf((img / np.maximum(self.illumination, 0.1)), img.shape[:2]) + phi
+        tmp_h = np.multiply(np.multiply(np.multiply(self.F_conj_h,np.conj(psf(Wh, (self.height, self.width)))), psf(Wh, (self.height, self.width))), self.F_conj_h)
+        tmp_v = np.multiply(np.multiply(np.multiply(self.F_conj_v,np.conj(psf(Wv, (self.height, self.width)))), psf(Wv, (self.height, self.width))), self.F_conj_v)
+        bottom = 1.0 + self.beta * (tmp_h + tmp_v) + self.omega * self.F_div
 
-        return np.real(np.fft.ifft2(up / bottom))
+        return np.abs(np.fft.fftshift(np.fft.ifft2(up / bottom)))
 
     def main(self, img):
         Wh, Wv = self.get_weigth_matrix()
@@ -77,8 +85,6 @@ class ReflectanceEstimation(object):
 
 def gamma_correction(img, gamma):
     output = (img.astype(dtype=np.float32)) ** (1. / gamma)
-    #output = np.clip(output, 0, 255)
-    #output = np.fix(output).astype(dtype=np.uint8)
     return output
 
 def fileRead():
@@ -100,12 +106,12 @@ if __name__ == '__main__':
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         h, s, v = cv2.split(hsv)
         # 輝度画像を用いて照明画像を推定
-        illumination = IlluminationEstimation(v, 0.007).main(v.astype(dtype=np.float32))
-        illumination = np.minimum(1.0, np.maximum(illumination, 0.0))
+        illumination = IlluminationEstimation(alpha=0.001, norm_p= 0.1, eta = 1./8., scale=1.0, eps=1e-3).get_illumination(v.astype(dtype=np.float32))
+        #illumination = np.minimum(1.0, np.maximum(illumination, 0.0))
         # BGRそれぞれで反射画像を生成
-        b_reflectance = ReflectanceEstimation(b,illumination, beta=0.001, omega=0.016, eps=10, lam=6.0, sigma=10.0).main(b)
-        g_reflectance = ReflectanceEstimation(g,illumination, beta=0.001, omega=0.016, eps=10, lam=6.0, sigma=10.0).main(g)
-        r_reflectance = ReflectanceEstimation(r,illumination, beta=0.001, omega=0.016, eps=10, lam=6.0, sigma=10.0).main(r)
+        b_reflectance = ReflectanceEstimation(b, illumination, beta=0.001, omega=0.016, eps=10.0, lam=6.0, sigma=10.0).main(b)
+        g_reflectance = ReflectanceEstimation(g, illumination, beta=0.001, omega=0.016, eps=10.0, lam=6.0, sigma=10.0).main(g)
+        r_reflectance = ReflectanceEstimation(r, illumination, beta=0.001, omega=0.016, eps=10.0, lam=6.0, sigma=10.0).main(r)
         reflectance = cv2.merge((b_reflectance, g_reflectance, r_reflectance))
         b_result = b_reflectance * gamma_correction(illumination, 2.2)
         g_result = g_reflectance * gamma_correction(illumination, 2.2)
@@ -113,6 +119,7 @@ if __name__ == '__main__':
         result = cv2.merge((b_result, g_result, r_result))
         #result = np.clip(result, 0.0, 255.0)
         #result = np.fix(result).astype(dtype=np.uint8)
+        cv2.imshow("Illumination", illumination)
         cv2.imshow("Reflectance", reflectance)
         cv2.imshow("Output", result)
         cv2.waitKey(0)
