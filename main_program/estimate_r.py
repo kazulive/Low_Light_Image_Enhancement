@@ -44,8 +44,8 @@ class ReflectanceEstimation(object):
     # 重み行列
     def get_weigth_matrix(self):
         # Wを計算
-        Wh = 1.0 / (np.abs(self.grad_h) + 0.001)
-        Wv = 1.0 / (np.abs(self.grad_v) + 0.001)
+        Wh = 1.0 / (np.abs(self.grad_h / 255.0) + 1e-3)
+        Wv = 1.0 / (np.abs(self.grad_v / 255.0) + 1e-3)
         cv2.imshow("WH", Wh)
         cv2.imshow("WH", Wv)
         #Wh = 1.0
@@ -62,6 +62,8 @@ class ReflectanceEstimation(object):
         # Gを計算
         Gh = (1.0 + self.lam * np.exp(-np.abs(grad_h)/self.sigma)) * grad_h
         Gv = (1.0 + self.lam * np.exp(-np.abs(grad_v)/self.sigma)) * grad_v
+        Gh /= 255.0
+        Gv /= 255.0
         cv2.imshow("Gv", Gh)
         cv2.imshow("Gv", Gv)
         return Gh, Gv
@@ -70,10 +72,10 @@ class ReflectanceEstimation(object):
         tmp_h = np.multiply(self.F_conj_h, psf(Gh, (self.height, self.width)))
         tmp_v = np.multiply(self.F_conj_v, psf(Gv, (self.height, self.width)))
         phi = self.omega * (tmp_h + tmp_v)
-        up = psf((img / np.maximum(self.illumination, 0.1)), img.shape[:2]) + phi
-        tmp_h = np.multiply(np.multiply(np.multiply(self.F_conj_h,np.conj(psf(Wh, (self.height, self.width)))), psf(Wh, (self.height, self.width))), self.F_conj_h)
-        tmp_v = np.multiply(np.multiply(np.multiply(self.F_conj_v,np.conj(psf(Wv, (self.height, self.width)))), psf(Wv, (self.height, self.width))), self.F_conj_v)
-        bottom = 1.0 + self.beta * (tmp_h + tmp_v) + self.omega * self.F_div
+        up = psf((img / np.maximum(self.illumination, 1e-3)), img.shape[:2]) + phi
+        tmp_h = np.multiply(np.multiply(self.F_conj_h, psf(Wh, (self.height, self.width))), self.F_h)
+        #tmp_v = np.multiply(np.multiply(self.F_conj_v, psf(Wv, (self.height, self.width))), self.F_v)
+        bottom = 1.0 + self.beta * tmp_h + self.omega * self.F_div
 
         return np.abs(np.fft.fftshift(np.fft.ifft2(up / bottom)))
 
@@ -81,7 +83,7 @@ class ReflectanceEstimation(object):
         Wh, Wv = self.get_weigth_matrix()
         Gh, Gv = self.get_gradient_matrix()
         reflectance = self.get_reflectance(img, Wh, Wv, Gh, Gv)
-        return reflectance
+        return reflectance, Wh, Wv, Gh, Gv
 
 def gamma_correction(img, gamma):
     output = (img.astype(dtype=np.float32)) ** (1. / gamma)
@@ -106,12 +108,12 @@ if __name__ == '__main__':
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         h, s, v = cv2.split(hsv)
         # 輝度画像を用いて照明画像を推定
-        illumination = IlluminationEstimation(alpha=0.001, norm_p= 0.1, eta = 1./8., scale=1.0, eps=1e-3).get_illumination(v.astype(dtype=np.float32))
+        illumination = IlluminationEstimation(alpha=0.007, norm_p= 0.4, eta = 1./8., scale=1.0, eps=1e-3, pyr_num=1).get_illumination(v)
         #illumination = np.minimum(1.0, np.maximum(illumination, 0.0))
         # BGRそれぞれで反射画像を生成
-        b_reflectance = ReflectanceEstimation(b, illumination, beta=0.001, omega=0.016, eps=10.0, lam=6.0, sigma=10.0).main(b)
-        g_reflectance = ReflectanceEstimation(g, illumination, beta=0.001, omega=0.016, eps=10.0, lam=6.0, sigma=10.0).main(g)
-        r_reflectance = ReflectanceEstimation(r, illumination, beta=0.001, omega=0.016, eps=10.0, lam=6.0, sigma=10.0).main(r)
+        b_reflectance, b_Wx, b_Wy, b_Gx, b_Gy = ReflectanceEstimation(b, illumination, beta=0.001, omega=0.016, eps=10.0, lam=10.0, sigma=10.0).main(b)
+        g_reflectance, g_Wx, g_Wy, g_Gx, g_Gy= ReflectanceEstimation(g, illumination, beta=0.001, omega=0.016, eps=10.0, lam=10.0, sigma=10.0).main(g)
+        r_reflectance, r_Wx, r_Wy, r_Gx, r_Gy= ReflectanceEstimation(r, illumination, beta=0.001, omega=0.016, eps=10.0, lam=10.0, sigma=10.0).main(r)
         reflectance = cv2.merge((b_reflectance, g_reflectance, r_reflectance))
         b_result = b_reflectance * gamma_correction(illumination, 2.2)
         g_result = g_reflectance * gamma_correction(illumination, 2.2)
