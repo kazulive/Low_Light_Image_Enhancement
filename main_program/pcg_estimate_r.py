@@ -38,8 +38,8 @@ class ReflectanceEstimation:
         dst = img * 255.0
         dst = np.clip(dst, 0.0, 255.0)
         # 入力画像の勾配画像
-        self.grad_h = cv2.filter2D(dst, -1, self.kernel)
-        self.grad_v = cv2.filter2D(dst, -1, self.kernel.T)
+        self.grad_h = cv2.filter2D(img, -1, self.kernel)
+        self.grad_v = cv2.filter2D(img, -1, self.kernel.T)
 
     # 勾配重み行列
     def compute_gradient_map(self, img):
@@ -49,8 +49,8 @@ class ReflectanceEstimation:
         #print(np.max(tmp))
         #Gh = cv2.filter2D(tmp, -1, self.kernel) * 255.0
         #Gv = cv2.filter2D(tmp, -1, self.kernel.T) * 255.0
-        grad_h = np.copy(self.grad_h / 255.0)
-        grad_v = np.copy(self.grad_v / 255.0)
+        grad_h = np.copy(self.grad_h)
+        grad_v = np.copy(self.grad_v)
         # ∇S^を計算
         grad_h[np.abs(grad_h) < self.eps / 255.0] = 0.0
         grad_v[np.abs(grad_v) < self.eps / 255.0] = 0.0
@@ -63,6 +63,7 @@ class ReflectanceEstimation:
 
     # 重み行列
     def compute_weigth_map(self, img):
+        """
         gaussian = cv2.GaussianBlur(img * 255.0, ksize=(5, 5), sigmaX=2.0)
         grad_h = cv2.filter2D(gaussian, -1, self.kernel)
         grad_v = cv2.filter2D(gaussian, -1, self.kernel.T)
@@ -71,6 +72,17 @@ class ReflectanceEstimation:
         Wv = 1.0 / (np.abs(grad_v) + 0.0001)
         #Wh = 1.0 + 1.0 / (1 + np.abs(grad_h))
         #Wv = 1.0 + 1.0 / (1 + np.abs(grad_v))
+        """
+        log_img = np.log10(img * 255.0 + 1.0)
+        grad_h = cv2.filter2D(log_img, -1, self.kernel)
+        g1 = cv2.GaussianBlur(np.abs(grad_h), (3, 3), 1.8)
+        g2 = cv2.GaussianBlur(np.abs(grad_h), (3, 3), 4.0 * 1.8)
+        dog = g2 - g1
+        dog[dog < 0.0] = 0.0
+        dog /= np.sum(dog)
+        print(np.max(dog))
+        cv2.imshow("DoG Filter", (dog * 255.0).astype(np.uint8))
+        cv2.waitKey(0)
         return Wh, Wv
 
     def solve_linear_equation(self, img, illumination, Wh, Wv, Gh, Gv):
