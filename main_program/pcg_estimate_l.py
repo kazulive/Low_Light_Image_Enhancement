@@ -30,7 +30,7 @@ class IlluminationEstimation:
         #uv = 1.0 / (np.abs(cv2.filter2D(img, -1, self.kernel.T)) + 1e-3)
         return uh, uv
 
-    def solve_linear_equation(self, img, Ih, Wx, Wy):
+    def solve_linear_equation(self, img, Ih, reflectance, Wx, Wy):
         """
         :param Ih: 初期 I^, shape=(h, w)
         :param Wx: 式(19)によるWd(x) (horizontal), shape=(h, w)
@@ -41,7 +41,7 @@ class IlluminationEstimation:
 
 
         # ベクトル化
-        Ih_vec = Ih.flatten('C')
+        Ih_vec = 0.25 * Ih.flatten('C') + (reflectance.T * img).flatten('C')#Ih.flatten('C') + (img / (reflectance + 1e-3)).flatten('C')
 
         # 式(19)はAx=b (x=t, b=t~)で表現可能
         dx = self.alpha * Wx
@@ -90,14 +90,14 @@ class IlluminationEstimation:
 
         return illumination
 
-    def get_illumination(self, img, illumination):#,reflectance):
+    def get_illumination(self, img, reflectance, illumination):#,reflectance):
         count = 0
         while(True):
             prev_illumination = np.copy(illumination)
             init_illumination = np.copy(img)
             Wx, Wy = self.compute_weight_map(illumination)
             # 照明画像を更新
-            illumination = self.solve_linear_equation(img, init_illumination, Wx, Wy)
+            illumination = self.solve_linear_equation(img, init_illumination, reflectance,  Wx, Wy)
             if(count != 0):
                 if(np.sum(illumination)-np.sum(prev_illumination) < 0.001):
                     break
