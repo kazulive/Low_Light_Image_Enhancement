@@ -30,7 +30,7 @@ class ReflectanceEstimation:
         self.lam = lam
         self.sigma = sigma
 
-        self.kernel = np.array([[-0, 0, 0],
+        self.kernel = np.array([[0, 0, 0],
                                 [-1, 1, 0],
                                 [0, 0, 0]])
         # Illuminatioを計算
@@ -63,15 +63,33 @@ class ReflectanceEstimation:
         return Gh, Gv
 
     # 重み行列
-    def compute_weigth_map(self, input, img):
+    def compute_weigth_map(self, input, img, sigma1, sigma2):
+        dx = cv2.filter2D(img, -1, self.kernel) * 255.0
+        dy = cv2.filter2D(img, -1, self.kernel.T) * 255.0
+
+        gdx1 = cv2.GaussianBlur(dx, (3, 3), sigma1)
+        gdy1 = cv2.GaussianBlur(dy, (3, 3), sigma1)
+        gdx2 = cv2.GaussianBlur(dx, (3, 3), sigma2)
+        gdy2 = cv2.GaussianBlur(dy, (3, 3), sigma2)
+
+        Wh = np.maximum(np.abs(gdx1) * np.abs(gdx2), self.eps) ** (-1)
+        Wv = np.maximum(np.abs(gdy1) * np.abs(gdy2), self.eps) ** (-1)
+        Wh = cv2.GaussianBlur(Wh, (3, 3), sigma1 / 2.0)
+        Wv = cv2.GaussianBlur(Wv, (3, 3), sigma1 / 2.0)
+
+        Wh[:, -1] = 0.0
+        Wv[-1, :] = 0.0
+
+        """
         gaussian = cv2.GaussianBlur(img, ksize=(5, 5), sigmaX=2.0)
         grad_h = cv2.filter2D(gaussian, -1, self.kernel)
         grad_v = cv2.filter2D(gaussian, -1, self.kernel.T)
-        #grad_h = np.copy(self.grad_h * 255.0)
-        #grad_v = np.copy(self.grad_v * 255.0)
+        grad_h = np.copy(self.grad_h * 255.0)
+        grad_v = np.copy(self.grad_v * 255.0)
         # Wを計算
-        Wh = 1.0 / (np.abs(grad_h) + 1e-3)
-        Wv = 1.0 / (np.abs(grad_v) + 1e-3)
+        Wh = 1.0 / (np.abs(grad_h) + 1.0)
+        Wv = 1.0 / (np.abs(grad_v) + 1.0)
+        """
         """
         Wb = 1.0 - np.maximum(input[:, :, 0], np.maximum(input[:, :, 1], input[:, :, 2]))
         #activation_map = ActivationMap().get_activation_map(input, img)
@@ -135,7 +153,7 @@ class ReflectanceEstimation:
 
         A = A + laplacian
 
-        tin = (illumination.T * img).flatten('F')
+        tin = ((img*255.0) / (illumination*255.0 + 1.0)).flatten('F')
         #print(np.max(tin))
 
         # ベクトル化
@@ -160,7 +178,7 @@ class ReflectanceEstimation:
         return OUT
 
     def get_reflectance(self, input, img, illumination):
-        Wx, Wy = self.compute_weigth_map(input, img)
+        Wx, Wy = self.compute_weigth_map(input, img, 1.0, 3.0)
         Gx, Gy = self.compute_gradient_map()
         reflectance = self.solve_linear_equation(img, illumination, Wx, Wy, Gx, Gy)
         return reflectance, Wx, Wy, Gx, Gy
@@ -191,38 +209,36 @@ if __name__ == '__main__':
         # BGR分割
         b, g, r = cv2.split(img)
         # HSV変換
-        HSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-        H, S, V = cv2.split(HSV)
+        YCrCb = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
+        Y, Cr, Cb = cv2.split(YCrCb)
         #V_r = np.ones(img.shape[:2], dtype=np.float32)
-        illumination = np.copy(V)
-        reflectance = np.ones(img.shape[:2])
+        illumination = np.copy(Y)#np.maximum(img[:,:,0], np.maximum(img[:,:,1], img[:,:,2]))
+        reflectance = np.zeros(img.shape[:2])
         flag = 0
-        while(flag < 5):
+        while(flag < 1):
             flag += 1
-            illumination = IlluminationEstimation(alpha=0.001, norm_p = 0.4, eta=1. / 8., scale=1.0, eps=1e-3).get_illumination(V, reflectance, illumination)
+            illumination = IlluminationEstimation(alpha=0.001, norm_p=0.4, eta=1. / 8., scale=1.0,
+                                                  eps=1e-3).get_illumination(img, Y, reflectance, illumination)
             print("Extract Illumination Image")
-            reflectance, Wx, Wy, Gx, Gy = ReflectanceEstimation(V, illumination, beta=0.0001, omega=0.016, eps=10.0,
-                                                                lam=10.0, sigma=10.0).get_reflectance(img, V,
-                                                                                                      illumination)
+            #reflectance, Wx, Wy, Gx, Gy = ReflectanceEstimation(V, illumination, beta=0.0001, omega=0.001, eps=0.0001,
+            #                                                    lam=10.0, sigma=10.0).get_reflectance(img, V,
+            #                                                                                          illumination)
+            b_reflectance, b_Wx, b_Wy, b_Gx, b_Gy = ReflectanceEstimation(b, illumination, beta=0.001, omega=0.0016, eps=0.0001, lam=10.0, sigma=1.0).get_reflectance(img, b, illumination)
+            g_reflectance, g_Wx, g_Wy, g_Gx, g_Gy= ReflectanceEstimation(g, illumination, beta=0.001, omega=0.0016, eps=0.0001, lam=10.0, sigma=1.0).get_reflectance(img, g, illumination)
+            r_reflectance, r_Wx, r_Wy, r_Gx, r_Gy= ReflectanceEstimation(r, illumination, beta=0.001, omega=0.0016, eps=0.0001, lam=10.0, sigma=1.0).get_reflectance(img, r, illumination)
             print("Extract Reflectance Image")
-            #reflectance = np.minimum(1.0, np.maximum(reflectance, 0.0))
-            """
-            b_reflectance, b_Wx, b_Wy, b_Gx, b_Gy = ReflectanceEstimation(b, illumination, beta=0.001, omega=0.016, eps=10.0, lam=10.0, sigma=1.0).get_reflectance(img, b, illumination)
-            g_reflectance, g_Wx, g_Wy, g_Gx, g_Gy= ReflectanceEstimation(g, illumination, beta=0.001, omega=0.016, eps=10.0, lam=10.0, sigma=1.0).get_reflectance(img, g, illumination)
-            r_reflectance, r_Wx, r_Wy, r_Gx, r_Gy= ReflectanceEstimation(r, illumination, beta=0.001, omega=0.016, eps=10.0, lam=10.0, sigma=1.0).get_reflectance(img, r, illumination)
-            """
 
             # 活性化マップを得る
             #b_activation = ActivationMap().get_activation_map(img, b)
             #g_activation = ActivationMap().get_activation_map(img, g)
             #r_activation = ActivationMap().get_activation_map(img, r)
             #activation = cv2.merge((b_activation, g_activation, r_activation))
-            #reflectance = cv2.merge((b_reflectance, g_reflectance, r_reflectance)).astype(dtype=np.float32)
+            reflectance = cv2.merge((b_reflectance, g_reflectance, r_reflectance)).astype(dtype=np.float32)
             #illumination = np.maximum(illumination, V)
-            cv2.imshow("Illumination", normalize(illumination))
-            cv2.imshow("Reflectance", normalize(reflectance))
-            cv2.waitKey(0)
-        """
+            #cv2.imshow("Illumination", normalize(illumination))
+            #cv2.imshow("Reflectance", normalize(reflectance))
+            #cv2.waitKey(0)
+
         reflectance = cv2.merge((b_reflectance, g_reflectance, r_reflectance))
         b_result = b_reflectance * gamma_correction(illumination, 2.2)
         g_result = g_reflectance * gamma_correction(illumination, 2.2)
@@ -232,14 +248,8 @@ if __name__ == '__main__':
         Gx = cv2.merge((b_Gx, g_Gx, r_Gx))
         Gy = cv2.merge((b_Gy, g_Gy, r_Gy))
         result = cv2.merge((b_result, g_result, r_result))
-        """
-        V_result = reflectance * gamma_correction(illumination, 2.2)
-        V_result = V_result.astype(dtype=np.float32)
-        result = cv2.merge((H, S, V_result))
-        result = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
-        reflectance = reflectance.astype(dtype=np.float32)
-        reflectance = cv2.merge((H, S, reflectance))
-        reflectance = cv2.cvtColor(reflectance, cv2.COLOR_HSV2BGR)
+        #reflectance = cv2.merge((H, S, reflectance))
+        #reflectance = cv2.cvtColor(reflectance, cv2.COLOR_HSV2BGR)
         cv2.imwrite("./result/Wx/0" + str(count) + ".bmp", np.fix(np.clip(Wx*255.0, 0.0, 255.0)).astype(dtype=np.uint8))
         cv2.imwrite("./result/Wy/0" + str(count) + ".bmp", np.fix(np.clip(Wy*255.0, 0.0, 255.0)).astype(dtype=np.uint8))
         cv2.imwrite("./result/Gx/0" + str(count) + ".bmp", np.fix(np.clip(Gx*255.0, 0.0, 255.0)).astype(dtype=np.uint8))

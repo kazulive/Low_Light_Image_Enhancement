@@ -15,6 +15,7 @@ class IlluminationEstimation:
         self.kernel = np.array([[-0, 0, 0],
                                 [-1, 1, 0],
                                 [-0, 0, 0]])
+
     def compute_weight_map(self, img):
 
         # ∇Iの計算
@@ -41,7 +42,7 @@ class IlluminationEstimation:
 
 
         # ベクトル化
-        Ih_vec = 0.25 * Ih.flatten('C') + (reflectance.T * img).flatten('C')#Ih.flatten('C') + (img / (reflectance + 1e-3)).flatten('C')
+        Ih_vec = Ih.flatten('C') + (reflectance * img).flatten('C')#Ih.flatten('C') + (img / (reflectance + 1e-3)).flatten('C')
 
         # 式(19)はAx=b (x=t, b=t~)で表現可能
         dx = self.alpha * Wx
@@ -90,14 +91,14 @@ class IlluminationEstimation:
 
         return illumination
 
-    def get_illumination(self, img, reflectance, illumination):#,reflectance):
+    def get_illumination(self, img, V, reflectance, illumination):#,reflectance):
         count = 0
         while(True):
             prev_illumination = np.copy(illumination)
-            init_illumination = np.copy(img)
+            init_illumination = np.maximum(img[:,:,0], np.maximum(img[:,:,1], img[:,:,2]))
             Wx, Wy = self.compute_weight_map(illumination)
             # 照明画像を更新
-            illumination = self.solve_linear_equation(img, init_illumination, reflectance,  Wx, Wy)
+            illumination = self.solve_linear_equation(V, init_illumination, reflectance,  Wx, Wy)
             if(count != 0):
                 if(np.sum(illumination)-np.sum(prev_illumination) < 0.001):
                     break
