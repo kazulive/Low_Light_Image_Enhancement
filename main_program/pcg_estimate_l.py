@@ -1,9 +1,8 @@
 import numpy as np
 import scipy.sparse
 import scipy.sparse.linalg
-import cv2
 
-# limeのmain処理
+
 class IlluminationEstimation:
     def __init__(self, alpha, norm_p, eta, scale, eps):
         self.alpha = alpha
@@ -16,6 +15,7 @@ class IlluminationEstimation:
                                 [-1, 1, 0],
                                 [-0, 0, 0]])
 
+    # Lpノルムによる繰り返し重み生成
     def compute_weight_map(self, img):
 
         # ∇Iの計算
@@ -27,11 +27,9 @@ class IlluminationEstimation:
         uh[np.abs(img_h) > self.eta] = 1.0 / ((np.abs(img_h[np.abs(img_h) > self.eta]))**(2 - self.norm_p) + 1e-3)
         uv[np.abs(img_v) > self.eta] = 1.0 / ((np.abs(img_v[np.abs(img_v) > self.eta])) ** (2 - self.norm_p) + 1e-3)
 
-        #uh = 1.0 / (np.abs(cv2.filter2D(img, -1, self.kernel)) + 1e-3)
-        #uv = 1.0 / (np.abs(cv2.filter2D(img, -1, self.kernel.T)) + 1e-3)
         return uh, uv
 
-    def solve_linear_equation(self, img, Ih, reflectance, Wx, Wy):
+    def solve_linear_equation(self, img, Ih, Wx, Wy):
         """
         :param Ih: 初期 I^, shape=(h, w)
         :param Wx: 式(19)によるWd(x) (horizontal), shape=(h, w)
@@ -40,9 +38,8 @@ class IlluminationEstimation:
         H, W = Ih.shape[:2]
         N = H * W
 
-
         # ベクトル化
-        Ih_vec = Ih.flatten('C') + (reflectance * img).flatten('C')#Ih.flatten('C') + (img / (reflectance + 1e-3)).flatten('C')
+        Ih_vec = Ih.flatten('C')
 
         # 式(19)はAx=b (x=t, b=t~)で表現可能
         dx = self.alpha * Wx
@@ -82,37 +79,17 @@ class IlluminationEstimation:
         if info != 0:
             print("収束不可能でした")
 
-        #illumination = scipy.sparse.linalg.spsolve(a, Ih_vec, use_umfpack=True)
-
         illumination = illumination.reshape((H, W), order='C')
 
-        #illumination = np.clip(illumination, 0, sys.maxsize)
-        #illumination = illumination / (np.max(illumination) + self.eps)
-
         return illumination
 
-    def get_illumination(self, img, V, reflectance, illumination):#,reflectance):
+    def get_illumination(self, img, v, illumination):
         count = 0
-        while(True):
-            prev_illumination = np.copy(illumination)
-            init_illumination = np.maximum(img[:,:,0], np.maximum(img[:,:,1], img[:,:,2]))
+        init_illumination = np.maximum(img[:, :, 0], np.maximum(img[:, :, 1], img[:, :, 2]))
+        while(count < 5):
+            count += 1
             Wx, Wy = self.compute_weight_map(illumination)
             # 照明画像を更新
-            illumination = self.solve_linear_equation(V, init_illumination, reflectance,  Wx, Wy)
-            if(count != 0):
-                if(np.sum(illumination)-np.sum(prev_illumination) < 0.001):
-                    break
+            illumination = self.solve_linear_equation(v, init_illumination, Wx, Wy)
             count += 1
         return illumination
-
-if __name__ == '__main__':
-    img = cv2.imread('./testdata/BMP/6.bmp')
-    cv2.imshow("input", img)
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    h, s, v = cv2.split(hsv)
-    output = IlluminationEstimation(alpha=0.01, norm_p= 0.4, eta = 1./8., scale=1.0, eps=1e-3).get_illumination(v)
-    #output = IlluminationEstimation(alpha=0.01, norm_p=0.4, eta=1. / 8., scale=1.0, eps=1e-3).get_illumination(v)
-    #output = IlluminationEstimation(alpha=0.01, norm_p=1.0, eta=1. / 8., scale=1.0, eps=1e-3).get_illumination(v)
-    output = IlluminationEstimation(alpha=0.01, norm_p=2.0, eta=1. / 8., scale=1.0, eps=1e-3).get_illumination(v)
-
-    cv2.waitKey(0)
