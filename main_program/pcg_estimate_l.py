@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 import scipy.sparse
 import scipy.sparse.linalg
 
@@ -29,7 +30,7 @@ class IlluminationEstimation:
 
         return uh, uv
 
-    def solve_linear_equation(self, img, Ih, Wx, Wy):
+    def solve_linear_equation(self, Ih, Wx, Wy):
         """
         :param Ih: 初期 I^, shape=(h, w)
         :param Wx: 式(19)によるWd(x) (horizontal), shape=(h, w)
@@ -74,7 +75,7 @@ class IlluminationEstimation:
         # 線形関数を構成
         m2 = scipy.sparse.linalg.LinearOperator((N, N), m.solve)
         # 前処理付き共役勾配法
-        illumination, info = scipy.sparse.linalg.bicgstab(a, Ih_vec, tol=1e-3, maxiter=2000, M=m2)
+        illumination, info = scipy.sparse.linalg.bicgstab(a, Ih_vec, tol=1e-5, maxiter=2000, M=m2)
 
         if info != 0:
             print("収束不可能でした")
@@ -83,13 +84,14 @@ class IlluminationEstimation:
 
         return illumination
 
-    def get_illumination(self, img, v, illumination):
+    def get_illumination(self, Y):
         count = 0
-        init_illumination = np.maximum(img[:, :, 0], np.maximum(img[:, :, 1], img[:, :, 2]))
+        illumination = Y #np.maximum(img[:, :, 0], np.maximum(img[:, :, 1], img[:, :, 2]))
+        init_illumination = np.copy(illumination)
         while(count < 5):
             count += 1
             Wx, Wy = self.compute_weight_map(illumination)
             # 照明画像を更新
-            illumination = self.solve_linear_equation(v, init_illumination, Wx, Wy)
+            illumination = self.solve_linear_equation(init_illumination, Wx, Wy)
             count += 1
         return illumination

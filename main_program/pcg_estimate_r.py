@@ -28,9 +28,13 @@ class ReflectanceEstimation:
 
     # 勾配重み行列
     def compute_gradient_map(self):
-        grad_h = np.copy(self.grad_h)
-        grad_v = np.copy(self.grad_v)
+        grad_h = np.copy(self.grad_h) * 255.0
+        grad_v = np.copy(self.grad_v) * 255.0
 
+        grad_h = np.clip(grad_h, 0.0, 255.0)
+        grad_v = np.clip(grad_v, 0.0, 255.0)
+
+        """
         # 最大・最小閾値を計算
         grad_h_min = np.min(grad_h) / 2.0
         grad_h_max = (np.max(grad_h) + 2.0 * np.mean(grad_h)) / 3.0
@@ -42,10 +46,17 @@ class ReflectanceEstimation:
         grad_v[np.abs(grad_v) < grad_v_min] = grad_v_min
         grad_h[np.abs(grad_h) > grad_h_max] = grad_h_max
         grad_v[np.abs(grad_v) > grad_v_max] = grad_v_max
+        """
+        grad_h[grad_h < 10] = 0.
+        grad_v[grad_v < 10] = 0.
 
         # Gを計算
         Gh = (1.0 + self.lam * (np.exp(-1 * np.abs(grad_h) / self.sigma))) * grad_h
         Gv = (1.0 + self.lam * (np.exp(-1 * np.abs(grad_v) / self.sigma))) * grad_v
+
+        Gh = np.clip(Gh, 0.0, 255.0)
+        Gv = np.clip(Gv, 0.0, 255.0)
+
         return Gh, Gv
 
     # 重み行列
@@ -67,6 +78,14 @@ class ReflectanceEstimation:
         Wh[:, -1] = 0.0
         Wv[-1, :] = 0.0
 
+        #Wh = np.zeros(img.shape)
+        #Wv = Wh
+        """
+        dx = cv2.filter2D(img, -1, self.kernel) * 255.0
+        dy = cv2.filter2D(img, -1, self.kernel.T) * 255.0
+        Wh = 1.0 / (np.abs(dx) + 1e-3)
+        Wv = 1.0 / (np.abs(dy) + 1e-3)
+        """
         return Wh, Wv
 
     def solve_linear_equation(self, img, illumination, Wh, Wv, Gh, Gv):
@@ -99,7 +118,6 @@ class ReflectanceEstimation:
         D = 1 - (dx + dy + dxa + dya)
         A = ((Ax + Ay) + (Ax + Ay).conj().T + scipy.sparse.spdiags(D, 0, N, N)).T
 
-
         main_diag = np.ones(N) * -4.0
         side_diag = np.ones(N - 1) * 1.0
         diagonals = [main_diag, side_diag, side_diag]
@@ -107,14 +125,18 @@ class ReflectanceEstimation:
 
         A = A + laplacian
 
-        tin = ((img*255.0) / (illumination*255.0 + 1.0)).flatten('F')
+        tin = ((img*255.0) / (illumination*255.0 + 1e-3)).flatten('F')
 
         # ベクトル化
         gh = -self.omega * Gh.flatten('F')
         gv = -self.omega * Gv.flatten('F')
 
-        gh[1:N] = gh[1:N] - gh[0:N-1]
-        gv[0:N-1] = gv[0:N-1] - gv[1:N]
+        #gh[0 : N-1] = gh[0 : N-1] + gh[1 : N]
+        #gv[1 : N] = gv[1 : N] + gv[0 : N-1]
+        gh[1:N] = gh[1:N] + gh[0:N-1]
+        gv[0:N-1] = gv[0:N-1] + gv[1:N]
+        gh[0] = 0
+        gv[-1] = 0
         tin = tin + (gh + gv)
 
         # 逆行列Aの近似
@@ -122,18 +144,24 @@ class ReflectanceEstimation:
         # 線形関数を構成
         m2 = scipy.sparse.linalg.LinearOperator((N, N), m.solve)
         # 前処理付き共役勾配法
-        tout, info = scipy.sparse.linalg.bicgstab(A, tin, tol=1e-3, maxiter=2000, M=m2)
+        tout, info = scipy.sparse.linalg.bicgstab(A, tin, tol=1e-5, maxiter=2000, M=m2)
         #tout = scipy.sparse.linalg.spsolve(A, tin)
         OUT = np.reshape(tout, (H, W), order='F')
         return OUT
 
     def get_reflectance(self, input, img, illumination):
         count = 0
-        while(count < 5):
-            count += 1
-            Wx, Wy = self.compute_weigth_map(img, 1.0, 3.0)
+        Wx, Wy = self.compute_weigth_map(img, 1.0, 3.0)
+        """
+        while(count < 3):
+            if(count != 0):
+                Wx, Wy = self.compute_weigth_map(reflectance, 1.0, 3.0)
             Gx, Gy = self.compute_gradient_map()
             reflectance = self.solve_linear_equation(img, illumination, Wx, Wy, Gx, Gy)
+            count += 1
+        """
+        Gx, Gy = self.compute_gradient_map()
+        reflectance = self.solve_linear_equation(img, illumination, Wx, Wy, Gx, Gy)
         return reflectance, Wx, Wy, Gx, Gy
 
 def gamma_correction(img, gamma):
@@ -161,21 +189,22 @@ if __name__ == '__main__':
         img = cv2.normalize(img.astype('float32'), None, 0.0, 1.0, cv2.NORM_MINMAX)
         # BGR分割
         b, g, r = cv2.split(img)
-        # HSV変換
+        # YCrCb変換
         YCrCb = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
         Y, Cr, Cb = cv2.split(YCrCb)
-        illumination = np.copy(Y)
+        #Visualization(dir_name=False, file_name="Y_show", flag=0).show(Y)
+        #illumination = np.copy(Y)
         # 照明画像を計算
-        illumination = IlluminationEstimation(alpha=0.001, norm_p=0.4, eta=1. / 8., scale=1.0,
-                                              eps=1e-3).get_illumination(img, Y, illumination)
+        illumination = IlluminationEstimation(alpha=0.007, norm_p=0.4, eta=1. / 8., scale=1.0,
+                                              eps=1e-3).get_illumination(Y)#, illumination)
         print("Extract Illumination Image")
 
         # 反射画像を生成
-        b_reflectance, b_Wx, b_Wy, b_Gx, b_Gy = ReflectanceEstimation(b, illumination, beta=0.001, omega=0.0016, eps=0.0001, lam=10.0, sigma=10.0).get_reflectance(img, b, illumination)
+        b_reflectance, b_Wx, b_Wy, b_Gx, b_Gy = ReflectanceEstimation(b, illumination, beta=0.001, omega=0.005, eps=0.0001, lam=6.0, sigma=10.0).get_reflectance(img, b, illumination)
         print("Extract B_Reflectance Image")
-        g_reflectance, g_Wx, g_Wy, g_Gx, g_Gy= ReflectanceEstimation(g, illumination, beta=0.001, omega=0.0016, eps=0.0001, lam=10.0, sigma=10.0).get_reflectance(img, g, illumination)
+        g_reflectance, g_Wx, g_Wy, g_Gx, g_Gy= ReflectanceEstimation(g, illumination, beta=0.001, omega=0.005, eps=0.0001, lam=6.0, sigma=10.0).get_reflectance(img, g, illumination)
         print("Extract G_Reflectance Image")
-        r_reflectance, r_Wx, r_Wy, r_Gx, r_Gy= ReflectanceEstimation(r, illumination, beta=0.001, omega=0.0016, eps=0.0001, lam=10.0, sigma=10.0).get_reflectance(img, r, illumination)
+        r_reflectance, r_Wx, r_Wy, r_Gx, r_Gy= ReflectanceEstimation(r, illumination, beta=0.001, omega=0.005, eps=0.0001, lam=6.0, sigma=10.0).get_reflectance(img, r, illumination)
         print("Extract R_Reflectance Image")
 
         reflectance = cv2.merge((b_reflectance, g_reflectance, r_reflectance)).astype(dtype=np.float32)
@@ -190,8 +219,8 @@ if __name__ == '__main__':
         Gy = cv2.merge((b_Gy, g_Gy, r_Gy))
         result = cv2.merge((b_result, g_result, r_result))
 
-        Visualization(dir_name="./result/Wx", file_name= str(count) + "0", flag=0).save(Wx)
-        Visualization(dir_name="./result/Wy", file_name=str(count) + "0", flag=0).save(Wy)
+        Visualization(dir_name="./result/Wx", file_name= str(count) + "0", flag=1).save(Wx)
+        Visualization(dir_name="./result/Wy", file_name=str(count) + "0", flag=1).save(Wy)
         Visualization(dir_name="./result/Gx", file_name=str(count) + "0", flag=0).save(Gx)
         Visualization(dir_name="./result/Gy", file_name=str(count) + "0", flag=0).save(Gy)
         Visualization(dir_name="./result/illumination", file_name=str(count) + "0", flag=0).save(illumination)

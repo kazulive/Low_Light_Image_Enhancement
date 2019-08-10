@@ -21,8 +21,10 @@ class Visualization(object):
             dst = img * 255.0
             dst = np.clip(dst, 0.0, 255.0)
             dst = np.fix(dst).astype(dtype=np.uint8)
-            return dst
-        return img
+        else:
+            dst = np.clip(img, 0.0, 255.0)
+            dst = np.fix(dst).astype(dtype=np.uint8)
+        return dst
 
     # 保存関数
     def save(self, img):
