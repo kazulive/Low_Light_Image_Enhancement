@@ -34,7 +34,7 @@ class ReflectanceEstimation:
         grad_h = np.clip(grad_h, 0.0, 255.0)
         grad_v = np.clip(grad_v, 0.0, 255.0)
 
-        """
+
         # 最大・最小閾値を計算
         grad_h_min = np.min(grad_h) / 2.0
         grad_h_max = (np.max(grad_h) + 2.0 * np.mean(grad_h)) / 3.0
@@ -46,24 +46,21 @@ class ReflectanceEstimation:
         grad_v[np.abs(grad_v) < grad_v_min] = grad_v_min
         grad_h[np.abs(grad_h) > grad_h_max] = grad_h_max
         grad_v[np.abs(grad_v) > grad_v_max] = grad_v_max
-        """
-        grad_h[grad_h < 10] = 0.
-        grad_v[grad_v < 10] = 0.
 
         # Gを計算
         Gh = (1.0 + self.lam * (np.exp(-1 * np.abs(grad_h) / self.sigma))) * grad_h
         Gv = (1.0 + self.lam * (np.exp(-1 * np.abs(grad_v) / self.sigma))) * grad_v
 
-        Gh = np.clip(Gh, 0.0, 255.0)
-        Gv = np.clip(Gv, 0.0, 255.0)
+        Gh = np.clip(Gh, 0.0, 255.0) / 255.0
+        Gv = np.clip(Gv, 0.0, 255.0) / 255.0
 
         return Gh, Gv
 
     # 重み行列
     def compute_weigth_map(self, img, sigma1, sigma2):
 
-        dx = cv2.filter2D(img, -1, self.kernel) * 255.0
-        dy = cv2.filter2D(img, -1, self.kernel.T) * 255.0
+        dx = cv2.filter2D(img, -1, self.kernel) #* 255.0
+        dy = cv2.filter2D(img, -1, self.kernel.T) #* 255.0
 
         gdx1 = cv2.GaussianBlur(dx, (3, 3), sigma1)
         gdy1 = cv2.GaussianBlur(dy, (3, 3), sigma1)
@@ -94,34 +91,36 @@ class ReflectanceEstimation:
         N = H * W
 
         # ベクトル化
-        dx = -Wh.flatten('F')
-        dy = -Wv.flatten('F')
+        dx = -self.beta * Wh.flatten('F')
+        dy = -self.beta * Wv.flatten('F')
         tempx = np.roll(Wh, 1, axis=1)
         tempy = np.roll(Wv, 1, axis=0)
-        dxa = -tempx.flatten('F')
-        dya = -tempy.flatten('F')
+        dxa = -self.beta * tempx.flatten('F')
+        dya = -self.beta * tempy.flatten('F')
         tmp = Wh[:, -1]
         tempx = np.concatenate((tmp[:,None], np.zeros((H, W-1))), axis=1)
         tmp = Wv[-1,:]
         tempy = np.concatenate((tmp[None, :], np.zeros((H-1, W))), axis=0)
-        dxd1 = -tempx.flatten('F')
-        dyd1 = -tempy.flatten('F')
+        dxd1 = -self.beta * tempx.flatten('F')
+        dyd1 = -self.beta * tempy.flatten('F')
 
         Wh[:,-1] = 0
         Wv[-1,:] = 0
-        dxd2 = -Wh.flatten('F')
-        dyd2 = -Wv.flatten('F')
+        dxd2 = -self.beta * Wh.flatten('F')
+        dyd2 = -self.beta * Wv.flatten('F')
 
         Ax = scipy.sparse.spdiags(np.concatenate((dxd1[:, None], dxd2[:, None]), axis=1).T, np.array([-N + H, -H]), N,
                                   N)
         Ay = scipy.sparse.spdiags(np.concatenate((dyd1[None, :], dyd2[None, :]), axis=0), np.array([-H + 1, -1]), N, N)
         D = 1 - (dx + dy + dxa + dya)
-        A = ((Ax + Ay) + (Ax + Ay).conj().T + scipy.sparse.spdiags(D, 0, N, N)).T
+        A = ((Ax + Ay) + (Ax + Ay).conj().T + scipy.sparse.spdiags(D, 0, N, N))
 
-        main_diag = np.ones(N) * -4.0
-        side_diag = np.ones(N - 1) * 1.0
-        diagonals = [main_diag, side_diag, side_diag]
-        laplacian = self.omega * scipy.sparse.diags(diagonals, [0, -1, 1], format="csr")
+        main_diag = np.ones(N) * 4.0
+        main_diag[0] = main_diag[N-1] = 3.0
+        side_diag = np.ones(N - 1) * -2.0
+        side2_diag = np.ones(N - 2) * -1.0
+        diagonals = [main_diag, side_diag, side_diag, side2_diag, side2_diag]
+        laplacian = self.omega * scipy.sparse.diags(diagonals, [0, -1, 1, -2, 2], format="csr")
 
         A = A + laplacian
 
@@ -131,12 +130,12 @@ class ReflectanceEstimation:
         gh = -self.omega * Gh.flatten('F')
         gv = -self.omega * Gv.flatten('F')
 
-        #gh[0 : N-1] = gh[0 : N-1] + gh[1 : N]
-        #gv[1 : N] = gv[1 : N] + gv[0 : N-1]
-        gh[1:N] = gh[1:N] + gh[0:N-1]
-        gv[0:N-1] = gv[0:N-1] + gv[1:N]
-        gh[0] = 0
-        gv[-1] = 0
+        #gh[0 : N-1] = -gh[0 : N-1] + gh[1 : N]
+        #gv[1 : N] = -gv[1 : N] + gv[0 : N-1]
+        gh[1:N] =  gh[1 : N] - gh[0 : N-1]
+        gv[0:N-1] = gv[0 : N-1] - gv[1 : N]
+        #gh[0] = 0
+        #gv[-1] = 0
         tin = tin + (gh + gv)
 
         # 逆行列Aの近似
@@ -144,7 +143,7 @@ class ReflectanceEstimation:
         # 線形関数を構成
         m2 = scipy.sparse.linalg.LinearOperator((N, N), m.solve)
         # 前処理付き共役勾配法
-        tout, info = scipy.sparse.linalg.bicgstab(A, tin, tol=1e-5, maxiter=2000, M=m2)
+        tout, info = scipy.sparse.linalg.bicgstab(A, tin, tol=1e-5, maxiter=3000, M=m2)
         #tout = scipy.sparse.linalg.spsolve(A, tin)
         OUT = np.reshape(tout, (H, W), order='F')
         return OUT
@@ -176,7 +175,7 @@ def normalize(img):
 
 def fileRead():
     data = []
-    for file in natsorted(glob.glob('./testdata/BMP/*.bmp')):
+    for file in natsorted(glob.glob('./testdata/Image/*.bmp')):
         data.append(cv2.imread(file, 1))
     return data
 
@@ -195,16 +194,16 @@ if __name__ == '__main__':
         #Visualization(dir_name=False, file_name="Y_show", flag=0).show(Y)
         #illumination = np.copy(Y)
         # 照明画像を計算
-        illumination = IlluminationEstimation(alpha=0.007, norm_p=0.4, eta=1. / 8., scale=1.0,
+        illumination = IlluminationEstimation(alpha=0.01, norm_p=0.4, eta=1. / 8., scale=1.0,
                                               eps=1e-3).get_illumination(Y)#, illumination)
         print("Extract Illumination Image")
 
         # 反射画像を生成
-        b_reflectance, b_Wx, b_Wy, b_Gx, b_Gy = ReflectanceEstimation(b, illumination, beta=0.001, omega=0.005, eps=0.0001, lam=6.0, sigma=10.0).get_reflectance(img, b, illumination)
+        b_reflectance, b_Wx, b_Wy, b_Gx, b_Gy = ReflectanceEstimation(b, illumination, beta=0.001, omega=0.016, eps=0.0001, lam=10.0, sigma=10.0).get_reflectance(img, b, illumination)
         print("Extract B_Reflectance Image")
-        g_reflectance, g_Wx, g_Wy, g_Gx, g_Gy= ReflectanceEstimation(g, illumination, beta=0.001, omega=0.005, eps=0.0001, lam=6.0, sigma=10.0).get_reflectance(img, g, illumination)
+        g_reflectance, g_Wx, g_Wy, g_Gx, g_Gy= ReflectanceEstimation(g, illumination, beta=0.001, omega=0.016, eps=0.0001, lam=10.0, sigma=10.0).get_reflectance(img, g, illumination)
         print("Extract G_Reflectance Image")
-        r_reflectance, r_Wx, r_Wy, r_Gx, r_Gy= ReflectanceEstimation(r, illumination, beta=0.001, omega=0.005, eps=0.0001, lam=6.0, sigma=10.0).get_reflectance(img, r, illumination)
+        r_reflectance, r_Wx, r_Wy, r_Gx, r_Gy= ReflectanceEstimation(r, illumination, beta=0.001, omega=0.016, eps=0.0001, lam=10.0, sigma=10.0).get_reflectance(img, r, illumination)
         print("Extract R_Reflectance Image")
 
         reflectance = cv2.merge((b_reflectance, g_reflectance, r_reflectance)).astype(dtype=np.float32)

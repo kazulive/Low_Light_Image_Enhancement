@@ -3,245 +3,99 @@
   <component name="ChangeListManager">
     <list default="true" id="5486d3cd-d49e-4b6f-bb26-fd70b0ceb987" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/pcg_estimate_l.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/pcg_estimate_l.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_program/pcg_estimate_r.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/pcg_estimate_r.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_program/result/Gx/10.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gx/10.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Gx/20.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gx/20.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Gx/30.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gx/30.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Gx/40.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gx/40.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Gx/50.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gx/50.bmp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_program/result/Gy/10.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gy/10.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Gy/20.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gy/20.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Gy/30.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gy/30.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Gy/40.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gy/40.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Gy/50.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Gy/50.bmp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_program/result/Wx/10.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wx/10.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Wx/20.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wx/20.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Wx/30.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wx/30.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Wx/40.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wx/40.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Wx/50.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wx/50.bmp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_program/result/Wy/10.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wy/10.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/01.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/010.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/011.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/012.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/013.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/014.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/015.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/016.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/017.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/018.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/019.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/02.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/020.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/021.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/022.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/023.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/024.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/025.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/026.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/027.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/028.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/029.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/03.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/030.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/031.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/04.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/05.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/06.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/07.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/08.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/09.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Wy/20.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wy/20.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Wy/30.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wy/30.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Wy/40.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wy/40.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/Wy/50.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/Wy/50.bmp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_program/result/illumination/10.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/illumination/10.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/01.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/010.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/011.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/012.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/013.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/014.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/015.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/016.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/017.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/018.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/019.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/01_p0.1.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/01_p2.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/02.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/020.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/021.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/022.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/023.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/024.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/025.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/026.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/027.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/028.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/029.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/03.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/030.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/031.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/032.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/033.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/034.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/04.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/05.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/06.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/07.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/08.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/G=[0,255]/09.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/01.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/010.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/011.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/012.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/013.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/014.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/015.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/016.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/017.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/018.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/019.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/02.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/020.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/021.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/022.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/023.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/024.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/025.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/026.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/027.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/028.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/029.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/03.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/030.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/031.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/04.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/05.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/06.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/07.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/08.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/09.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/20.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/illumination/20.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/30.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/illumination/30.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/40.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/illumination/40.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/illumination/50.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/illumination/50.bmp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_program/result/output/10.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/output/10.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/01.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/010.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/011.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/012.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/013.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/014.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/015.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/016.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/017.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/018.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/019.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/02.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/020.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/021.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/022.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/023.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/024.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/025.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/026.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/027.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/028.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/029.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/03.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/030.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/031.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/04.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/05.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/06.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/07.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/08.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/G=[0,255]/09.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/01.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/010.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/011.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/012.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/013.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/014.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/015.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/016.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/017.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/018.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/019.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/02.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/020.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/021.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/022.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/023.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/024.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/025.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/026.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/027.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/028.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/029.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/03.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/030.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/031.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/04.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/05.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/06.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/07.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/08.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/output/最大・最小閾値 W=[0, 255]/09.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/01.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/010.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/011.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/012.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/013.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/014.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/015.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/016.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/017.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/018.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/019.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/02.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/020.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/021.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/022.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/023.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/024.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/025.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/026.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/027.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/028.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/029.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/03.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/030.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/031.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/04.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/05.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/06.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/07.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/08.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/09.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/100.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/110.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/120.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/130.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/140.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/150.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/160.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/170.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/180.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/190.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/20.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/output/20.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/200.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/210.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/220.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/230.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/240.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/250.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/260.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/270.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/280.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/290.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/30.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/output/30.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/300.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/40.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/output/40.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/50.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/output/50.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/60.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/70.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/80.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/output/90.bmp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/10.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/reflectance/10.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/01.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/010.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/011.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/012.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/013.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/014.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/015.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/016.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/017.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/018.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/019.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/02.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/020.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/021.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/022.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/023.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/024.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/025.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/026.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/027.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/028.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/029.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/02_WG.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/03.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/030.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/031.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/032.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/033.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/034.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/04.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/05.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/06.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/07.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/08.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/G=[0,255]/09.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/100.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/110.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/120.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/130.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/140.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/150.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/160.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/170.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/180.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/190.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/20.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/reflectance/20.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/200.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/210.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/220.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/230.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/240.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/250.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/260.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/270.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/280.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/290.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/30.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/reflectance/30.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/300.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/40.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/reflectance/40.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/50.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/reflectance/50.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/60.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/70.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/80.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/reflectance/90.bmp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main_program/result/shadow-up/10.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/shadow-up/10.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/testdata/01.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/testdata/BMP/3.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_program/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/shadow-up/20.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/shadow-up/20.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/shadow-up/30.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/shadow-up/30.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/shadow-up/40.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/shadow-up/40.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/result/shadow-up/50.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/main_program/result/shadow-up/50.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/testdata/BMP/1.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_program/testdata/BMP/2.bmp" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -254,32 +108,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main_program/pcg_estimate_r.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="202" column="110" selection-start-line="202" selection-start-column="110" selection-end-line="202" selection-end-column="110" />
+            <state relative-caret-position="2296">
+              <caret line="205" column="94" selection-start-line="205" selection-start-column="94" selection-end-line="205" selection-end-column="94" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main_program/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
-              <folding>
-                <element signature="e#25#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main_program/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="40" selection-start-column="40" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -287,22 +120,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main_program/pcg_estimate_l.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
+            <state relative-caret-position="-696">
               <caret line="20" selection-start-line="20" selection-end-line="20" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main_program/activation_map.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -347,8 +168,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2434" />
-    <option name="y" value="-20" />
+    <option name="x" value="-809" />
+    <option name="y" value="-12" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -357,7 +178,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -379,6 +199,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="RecentsManager">
@@ -418,9 +239,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1696" height="1026" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14053077" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1227608" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -431,7 +252,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.19820829" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.19176598" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.33150986" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -479,16 +300,6 @@
           <caret line="267" selection-start-line="242" selection-start-column="8" selection-end-line="267" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../IlluminationEnhancement/MySubject/conv_program/ying.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="46" column="38" selection-start-line="46" selection-start-column="11" selection-end-line="46" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -548,12 +359,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main_program/utils.py">
+    <entry file="file://$PROJECT_DIR$/main_program/activation_map.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
+        <state relative-caret-position="119">
+          <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
           <folding>
-            <element signature="e#25#35#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -565,19 +376,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main_program/activation_map.py">
+    <entry file="file://$PROJECT_DIR$/main_program/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
+        <state relative-caret-position="425">
+          <caret line="26" column="18" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#25#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../LIME/lime.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1224" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../IlluminationEnhancement/MySubject/conv_program/ying.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="46" column="38" selection-start-line="46" selection-start-column="11" selection-end-line="46" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main_program/pcg_estimate_l.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
+        <state relative-caret-position="-696">
           <caret line="20" selection-start-line="20" selection-end-line="20" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -587,8 +413,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main_program/pcg_estimate_r.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="202" column="110" selection-start-line="202" selection-start-column="110" selection-end-line="202" selection-end-column="110" />
+        <state relative-caret-position="2296">
+          <caret line="205" column="94" selection-start-line="205" selection-start-column="94" selection-end-line="205" selection-end-column="94" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
