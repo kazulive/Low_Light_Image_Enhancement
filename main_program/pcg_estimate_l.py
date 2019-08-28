@@ -75,7 +75,7 @@ class IlluminationEstimation:
         # 線形関数を構成
         m2 = scipy.sparse.linalg.LinearOperator((N, N), m.solve)
         # 前処理付き共役勾配法
-        illumination, info = scipy.sparse.linalg.bicgstab(a, Ih_vec, tol=1e-5, maxiter=2000, M=m2)
+        illumination, info = scipy.sparse.linalg.bicgstab(a, Ih_vec, tol=1e-5, maxiter=3000, M=m2)
 
         if info != 0:
             print("収束不可能でした")
@@ -92,6 +92,6 @@ class IlluminationEstimation:
             count += 1
             Wx, Wy = self.compute_weight_map(illumination)
             # 照明画像を更新
-            illumination = self.solve_linear_equation(init_illumination, Wx, Wy)
+            illumination = self.solve_linear_equation(illumination, Wx, Wy)
             count += 1
         return illumination
